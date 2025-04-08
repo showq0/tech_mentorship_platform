@@ -1,1 +1,1 @@
-# tech_mentorship_platformgit 
+# tech_mentorship_platform
