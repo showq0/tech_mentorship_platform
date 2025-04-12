@@ -32,7 +32,12 @@ class BookSessionSerializer(serializers.ModelSerializer):
             # Filtering slots based on mentor_id param
             url_kwargs = request.parser_context.get('kwargs', {})
             mentor_id = url_kwargs.get('mentor_id')
-            if mentor_id:
+            mentee_id = url_kwargs.get('mentee_id')
+            is_mentorship = Mentorship.objects.filter(mentee_id=mentee_id, mentor_id=mentor_id, status='active').exists()
+            if not is_mentorship:
+                self.fields['slot'].queryset = None
+
+            if is_mentorship:
                 self.fields['slot'].queryset = available_slot.filter(mentor_id=mentor_id)
 
 
