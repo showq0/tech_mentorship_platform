@@ -2,7 +2,7 @@ from mentorship.models import Mentor, Mentee, BookingSlot, Session, Mentorship
 from mentorship.serializers import MentorSerializer, MenteeSerializer
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
-
+from mentorship.permissions import IsMentor, IsMentee
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from mentorship.serializers import SlotSerializer, BookSessionSerializer, AssignMentorSerializer
@@ -23,7 +23,7 @@ class MenteeViewSet(ListAPIView):
 
 
 class CreateAvailableSlotsView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsMentor]
     serializer_class = SlotSerializer
 
     def post(self, request, mentor_id=None):
@@ -68,7 +68,7 @@ class CreateAvailableSlotsView(APIView):
 
 
 class BookSessionView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsMentee]
     serializer_class = BookSessionSerializer
 
     def post(self, request, mentee_id, mentor_id):
