@@ -15,6 +15,7 @@ class UserAdmin(BaseUserAdmin):
         (None
          , {"fields": ("role", "profile_info")}),
     )
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', "role")
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
@@ -22,7 +23,11 @@ class UserAdmin(BaseUserAdmin):
         return form
 
 
+class BookingSlotAdmin(admin.ModelAdmin):
+    list_display = ('mentor', "is_booked", "duration_minutes")
+
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Mentorship)
 admin.site.register(Session)
-admin.site.register(BookingSlot)
+admin.site.register(BookingSlot, BookingSlotAdmin)

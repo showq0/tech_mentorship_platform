@@ -63,14 +63,14 @@ class Mentorship(models.Model):
     def __str__(self):
         if self.end_date:
             return f"{self.mentee.username} - {self.end_date}"
-        return f"{self.mentee.username} - active"
+        return f"{self.mentee.username} - {self.status}"
 
     class Meta:
         unique_together = ['mentor', 'mentee']
 
 
 class BookingSlot(models.Model):
-    mentor = models.ForeignKey(User, on_delete=models.CASCADE)
+    mentor = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'mentor'})
     start_time = models.DateTimeField(default=timezone.now)
     duration_minutes = models.PositiveIntegerField()
     is_booked = models.BooleanField(default=False)

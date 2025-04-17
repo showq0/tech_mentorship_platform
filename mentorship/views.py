@@ -1,44 +1,42 @@
-from mentorship.models import Mentor, Mentee, BookingSlot, Session, Mentorship
-from mentorship.serializers import MentorSerializer, MenteeSerializer
+from mentorship.models import User, BookingSlot, Session, Mentorship
+from mentorship.serializers import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from mentorship.permissions import IsMentor, IsMentee
-from rest_framework import status, viewsets
+from rest_framework import status
 from rest_framework.response import Response
 from mentorship.serializers import SlotSerializer, BookSessionSerializer, AssignMentorSerializer
 from datetime import datetime, timedelta
 from rest_framework.permissions import IsAuthenticated
+from django.core.exceptions import ValidationError
 
 
-class MentorViewSet(ListAPIView):
+class MentorListView(ListAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Mentor.objects.all()
-    serializer_class = MentorSerializer
+    queryset = User.objects.filter(role='mentor')
+    serializer_class = UserSerializer
 
 
-class MenteeViewSet(ListAPIView):
+class MenteeListView(ListAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Mentee.objects.all()
-    serializer_class = MenteeSerializer
+    queryset = User.objects.filter(role='mentee')
+    serializer_class = UserSerializer
 
 
 class CreateAvailableSlotsView(APIView):
-    permission_classes = [IsAuthenticated, IsMentor]
+    permission_classes = [IsAuthenticated]
     serializer_class = SlotSerializer
 
-    def post(self, request, mentor_id=None):
+    def post(self, request):
         serializer = SlotSerializer(data=request.data)
-        is_mentor = Mentor.objects.filter(id=mentor_id).exists()
-        if not is_mentor:
-            return Response({"error": "Mentor can Access "},
-                            status=status.HTTP_400_BAD_REQUEST)
+        mentor_id = request.user.id
         if serializer.is_valid():
             first_date = serializer.validated_data['first_date']
             last_date = serializer.validated_data['last_date']
             start_time = serializer.validated_data['start_time']
             end_time = serializer.validated_data['end_time']
             duration_minutes = serializer.validated_data['duration_minutes']
-            buffer_minutes = serializer.validated_data['buffer_minutes']
+            buffer_minutes = serializer.validated_data['buffer_minutes']  # Optional
 
             current_date = datetime.combine(first_date, start_time)
             last_date = datetime.combine(last_date, end_time)
@@ -71,7 +69,16 @@ class BookSessionView(APIView):
     permission_classes = [IsAuthenticated, IsMentee]
     serializer_class = BookSessionSerializer
 
-    def post(self, request, mentee_id, mentor_id):
+    def get(self, request, mentor_id):
+        mentee_id = request.user.id
+        is_mentorship = Mentorship.objects.filter(mentee_id=mentee_id, mentor_id=mentor_id).exists()
+
+        if not is_mentorship:
+            return Response({"error": "The mentor is not for mentee"},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+    def post(self, request, mentor_id):
+        mentee_id = request.user.id
         serializer = BookSessionSerializer(data=request.data, context={'mentee_id': mentee_id})
 
         if serializer.is_valid():
@@ -105,16 +112,20 @@ class BookSessionView(APIView):
 
 class AssignMentorView(APIView):
     # need to be done
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsMentee]
     serializer_class = AssignMentorSerializer
 
-    def post(self, request, mentee_id):
+    def post(self, request):
         serializer = AssignMentorSerializer(data=request.data)
+        mentee_id = request.user.id
         if serializer.is_valid():
-            mentor = serializer.validated_data['mentor']
-            Mentorship.objects.create(
-                mentor=mentor,
-                mentee_id=mentee_id,
-            )
+            try:
+                mentor = serializer.validated_data['mentor']
+                Mentorship.objects.create(
+                    mentor=mentor,
+                    mentee_id=mentee_id,
+                )
+            except ValidationError as e:
+                return Response({"message": e.messages}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({"message": "Assign mentor successfully "}, status=status.HTTP_400_BAD_REQUEST)
