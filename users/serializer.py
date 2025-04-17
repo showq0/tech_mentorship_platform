@@ -1,5 +1,4 @@
-from django.contrib.auth.models import User
-from mentorship.models import Mentor, Mentee
+from mentorship.models import User
 from rest_framework import serializers
 
 
@@ -18,14 +17,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data.get('email'),
-            password=validated_data['password']
+            password=validated_data['password'],
+            role=validated_data['role']
         )
-        if validated_data['role'] == 'mentor':
-            user = Mentor.objects.create(
-                user_id = user.id,
-            )
-        if validated_data['role'] == 'mentee':
-            user = Mentee.objects.create(
-                user_id = user.id,
-            )
         return user

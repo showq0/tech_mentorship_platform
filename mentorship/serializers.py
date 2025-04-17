@@ -1,19 +1,11 @@
 from rest_framework import serializers
-from mentorship.models import Mentor, Mentee, Session, Mentorship
+from mentorship.models import User, Session, Mentorship
 
 
-class MentorSerializer(serializers.ModelSerializer):
-
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Mentor
-        fields = ['user', 'skills', 'bio']
-
-
-class MenteeSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Mentee
-        fields = ['user', 'interest', 'goals']
+        model = User
+        fields = ['username', 'profile_info']
 
 
 class BookSessionSerializer(serializers.ModelSerializer):
@@ -23,22 +15,20 @@ class BookSessionSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        available_slot = self.fields['slot'].queryset.filter(is_booked=False)
-        self.fields['slot'].queryset = available_slot
-
         request = self.context.get('request')
 
         if request:
+            mentee_id = request.user.id
             # Filtering slots based on mentor_id param
             url_kwargs = request.parser_context.get('kwargs', {})
             mentor_id = url_kwargs.get('mentor_id')
-            mentee_id = url_kwargs.get('mentee_id')
+            # need to indexing by mentor
             is_mentorship = Mentorship.objects.filter(mentee_id=mentee_id, mentor_id=mentor_id, status='active').exists()
             if not is_mentorship:
                 self.fields['slot'].queryset = None
 
             if is_mentorship:
-                self.fields['slot'].queryset = available_slot.filter(mentor_id=mentor_id)
+                self.fields['slot'].queryset = self.fields['slot'].queryset.filter(mentor_id=mentor_id,is_booked=False)
 
 
 class SlotSerializer(serializers.Serializer):
