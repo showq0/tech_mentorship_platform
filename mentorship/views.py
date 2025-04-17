@@ -98,7 +98,7 @@ class BookSessionView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AssignMentorView(APIView):
+class RequestMentorshipView(APIView):
     # need to be done
     permission_classes = [IsAuthenticated, IsMentee]
     serializer_class = AssignMentorSerializer
@@ -116,4 +116,4 @@ class AssignMentorView(APIView):
             except ValidationError as e:
                 return Response({"message": e.messages}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({"message": "Assign mentor successfully "}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Mentorship request sent to mentor successfully "}, status=status.HTTP_400_BAD_REQUEST)
