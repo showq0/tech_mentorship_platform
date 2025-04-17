@@ -1,12 +1,12 @@
 from django.urls import path, include
-from mentorship.views import CreateAvailableSlotsView, BookSessionView, AssignMentorView, MentorListView, MenteeListView
+from mentorship.views import CreateAvailableSlotsView, BookSessionView, RequestMentorshipView, MentorListView, MenteeListView
 from rest_framework.routers import DefaultRouter
 
 
 urlpatterns = [
-    path('mentors/', MentorListView.as_view(), name='mentor'),
-    path('mentees/', MenteeListView.as_view(), name='mentee'),
-    path('create_slots/', CreateAvailableSlotsView.as_view(), name='create_slots'),
-    path('book_session/<int:mentor_id>', BookSessionView.as_view(), name='book_session'),
-    path('assign_mentor/', AssignMentorView.as_view(), name='assign_mentor'),
+    path('mentors/', MentorListView.as_view(), name='mentors'),
+    path('mentees/', MenteeListView.as_view(), name='mentees'),
+    path('mentor/availability/', CreateAvailableSlotsView.as_view(), name='mentor-availability-create'),
+    path('mentors/<int:mentor_id>/sessions/book/', BookSessionView.as_view(), name='session-book'),
+    path('mentors/<int:mentor_id>/requests/', RequestMentorshipView.as_view(), name='mentorship-request'),
 ]
