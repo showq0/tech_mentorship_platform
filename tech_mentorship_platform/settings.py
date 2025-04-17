@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'mentorship',
-    'users',
+    'user_auth',
 ]
 
 MIDDLEWARE = [
@@ -133,4 +133,4 @@ REST_FRAMEWORK = {
     )
 }
 
-AUTH_USER_MODEL = 'mentorship.User'
+AUTH_USER_MODEL = 'user_auth.User'

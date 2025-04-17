@@ -1,4 +1,4 @@
-from mentorship.models import User
+from user_auth.models import User
 from rest_framework import serializers
 
 

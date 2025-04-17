@@ -1,9 +1,7 @@
 from django.db import models
 from django.utils import timezone
-from django.urls import reverse
-from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
-
+from user_auth.models import User
 
 # Create your models here.
 
@@ -16,27 +14,6 @@ STATUS_CHOICES = [
     (ACTIVE, 'Active'),
     (COMPLETED, 'Completed'),
 ]
-
-
-class User(AbstractUser):
-    MENTOR = 'mentor'
-    MENTEE = 'mentee'
-    ROLE_CHOICES = [
-        (MENTOR, 'Mentor'),
-        (MENTEE, 'Mentee'),
-    ]
-
-    role = models.CharField(
-        max_length=6,
-        choices=ROLE_CHOICES,
-        blank=True,
-    )
-    profile_info = models.JSONField(default=dict)
-
-    def __str__(self):
-        if self.role:
-            return f"{self.username}-{self.role}"
-        return f"{self.username}"
 
 
 class Mentorship(models.Model):
@@ -83,8 +60,12 @@ class BookingSlot(models.Model):
 
 
 class Session (models.Model):
-    mentor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='session_as_mentor')
-    mentee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='session_as_mentee')
+    mentor = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='session_as_mentor',
+                               limit_choices_to={'role': 'mentor'})
+    mentee = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='session_as_mentee',
+                               limit_choices_to={'role': 'mentee'})
     slot = models.OneToOneField(BookingSlot, on_delete=models.CASCADE)
     note = models.TextField(blank=True, default="")
 
