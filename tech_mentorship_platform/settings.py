@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +45,8 @@ INSTALLED_APPS = [
     'user_auth',
     'chat',
 ]
+
+ASGI_APPLICATION = "tech_mentorship_platform.asgi.application"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
