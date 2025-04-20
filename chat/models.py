@@ -15,13 +15,16 @@ class Message(models.Model):
     is_read = models.BooleanField()
     sent_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-sent_at']
+
     def __str__(self):
         return f"{self.content}"
 
     @classmethod
-    def chat(cls, user1_id, user2_id):
+    def chat(cls, user1_id, user2_id ):
         chat_users = [user1_id, user2_id]
-        chat_messages = Message.objects.filter(sender__in=chat_users, receiver__in=chat_users).order_by("send_time")
+        chat_messages = Message.objects.filter(sender__in=chat_users, receiver__in=chat_users)
         return chat_messages
 
     @classmethod
