@@ -12,7 +12,7 @@ class Message(models.Model):
                                  related_name='message_receiver',
                                  )
     content = models.TextField()
-    is_read = models.BooleanField()
+    is_read = models.BooleanField(default=False)
     sent_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
