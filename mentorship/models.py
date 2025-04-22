@@ -40,7 +40,7 @@ class Mentorship(models.Model):
     def __str__(self):
         if self.end_date:
             return f"{self.mentee.username} - {self.end_date}"
-        return f"{self.mentee.username} - {self.status}"
+        return f"{self.mentee.username} - {self.mentee.username}- {self.status}"
 
     class Meta:
         unique_together = ['mentor', 'mentee']

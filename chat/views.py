@@ -16,7 +16,7 @@ class ConversationsListView(ListAPIView):
 
     def get_queryset(self):
         if self.request.user:
-            return Message.get_chat_partners(self.request.user)
+            return Message.get_user_chats(self.request.user)
         return []
 
 
