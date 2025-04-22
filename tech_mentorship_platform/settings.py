@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'mentorship',
     'user_auth',
+    'chat',
 ]
 
 MIDDLEWARE = [

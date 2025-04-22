@@ -26,3 +26,4 @@ staticfiles/
 .DS_Store
 Thumbs.db
 
+user_chats_performance.log
