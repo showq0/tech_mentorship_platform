@@ -1,11 +1,21 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
+from chat.models import Message
 
 
 class MessagesConsumer(AsyncWebsocketConsumer):
+    chat_id = None
+
+    async def save_message(self, sender_id, content, chat_id):
+        await Message.objects.acreate(
+            sender_id=sender_id,
+            content=content,
+            chat_id=chat_id
+        )
+
     async def connect(self):
-        self.mentorship_id = self.scope['url_route']['kwargs']['mentorship_id']
-        self.chat_room = f'mentorship_{self.mentorship_id}'
+        self.chat_id = self.scope['url_route']['kwargs']['chat_id']
+        self.chat_room = f'chat_id{self.chat_id}'
 
         # Join chat group  is a collection of channels
         await self.channel_layer.group_add(
@@ -19,11 +29,14 @@ class MessagesConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         message = data['message']
         sender_name = data['sender_name']
+        sender_id = data['sender_id']
+
+        await self.save_message(sender_id, message, self.chat_id)
 
         await self.channel_layer.group_send(
             self.chat_room,
             {
-                'type': 'chat_message', # map to send method
+                'type': 'chat_message',  # map to send method
                 'message': message,
                 'sender_name': sender_name
             }
