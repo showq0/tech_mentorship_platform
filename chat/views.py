@@ -28,10 +28,10 @@ class ChatRoomView(APIView):
             chat = Chat.objects.get(id=chat_id)
         except Chat.DoesNotExist:
             return Response(
-                {"message": "Chat not available for this mentorship."},
+                {"message": "Chat resources not available."},
                 status=status.HTTP_404_NOT_FOUND
             )
-        messages = Message.objects.filter(chat=chat) if chat else []
+        messages = Message.objects.filter(chat__id=chat_id) if chat else []
         return render(request, 'conversation.html', {
             'chat_id': chat.id,
             'chat_name': chat.__str__(),

@@ -1,15 +1,17 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from chat.models import Message
-from channels.db import database_sync_to_async
 
 
 class MessagesConsumer(AsyncWebsocketConsumer):
     chat_id = None
 
-    @database_sync_to_async
-    def save_message(self, sender_id, content, chat_id):
-        Message.objects.create(sender_id=sender_id, content=content, chat_id=chat_id)
+    async def save_message(self, sender_id, content, chat_id):
+        await Message.objects.acreate(
+            sender_id=sender_id,
+            content=content,
+            chat_id=chat_id
+        )
 
     async def connect(self):
         self.chat_id = self.scope['url_route']['kwargs']['chat_id']
