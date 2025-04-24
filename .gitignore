@@ -27,3 +27,4 @@ staticfiles/
 Thumbs.db
 
 user_chats_performance.log
+dump.rdb
