@@ -1,5 +1,7 @@
 from user_auth.models import User
 from rest_framework import serializers
+from django_jsonform.validators import JSONSchemaValidator, JSONSchemaValidationError
+from user_auth.constant import mentee_profile_info, mentor_profile_info
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -21,3 +23,18 @@ class RegisterSerializer(serializers.ModelSerializer):
             role=validated_data['role']
         )
         return user
+
+
+class ProfileSerializer(serializers.Serializer):
+    profile_info = serializers.JSONField()
+
+    def validate_profile_info(self, profile_info):
+        is_mentor = self.context.get('is_mentor')
+        if is_mentor:
+            validator = JSONSchemaValidator(mentor_profile_info)
+        else:
+            validator = JSONSchemaValidator(mentee_profile_info)
+
+        validator(profile_info)
+
+        return profile_info
