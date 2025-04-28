@@ -23,5 +23,6 @@ urlpatterns = [
     path('', include('mentorship.urls')),
     path('accounts/', include('user_auth.urls')),
     path('api/chat/', include('chat.urls')),
+    path('feedback/', include('mentorship_feedback.urls')),
 
 ]
