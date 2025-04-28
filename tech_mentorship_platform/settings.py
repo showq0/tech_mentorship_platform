@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'mentorship',
     'user_auth',
     'chat',
+    'mentorship_feedback'
 ]
 
 ASGI_APPLICATION = "tech_mentorship_platform.asgi.application"
