@@ -36,7 +36,7 @@ class CreateReview(APIView):
             mentee_id = Mentorship.objects.get(id=mentorship_id).mentee_id
             if mentee_id != user_id:
                 return Response({"message": "You don't have access to review other mentors"},
-                                status=status.HTTP_201_CREATED)
+                                status=status.HTTP_400_BAD_REQUEST)
             serializer.save()
             return Response({"message": "Review sent successfully"},
                             status=status.HTTP_201_CREATED)
