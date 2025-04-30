@@ -1,6 +1,6 @@
 from mentorship.models import BookingSlot, Session, Mentorship
 from user_auth.models import User
-from mentorship.serializers import UserSerializer
+from mentorship.serializers import UserListSerializer
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from mentorship.permissions import IsMentor, IsMentee, IsMentorship
@@ -15,13 +15,13 @@ from django.core.exceptions import ValidationError
 class MentorListView(ListAPIView):
     permission_classes = [IsAuthenticated]
     queryset = User.objects.filter(role='mentor')
-    serializer_class = UserSerializer
+    serializer_class = UserListSerializer
 
 
 class MenteeListView(ListAPIView):
     permission_classes = [IsAuthenticated]
     queryset = User.objects.filter(role='mentee')
-    serializer_class = UserSerializer
+    serializer_class = UserListSerializer
 
 
 class CreateAvailableSlotsView(APIView):

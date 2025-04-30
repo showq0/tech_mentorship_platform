@@ -38,3 +38,10 @@ class ProfileSerializer(serializers.Serializer):
         validator(profile_info)
 
         return profile_info
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+

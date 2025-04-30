@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'mentorship',
     'user_auth',
     'chat',
-    'mentorship_feedback'
+    'mentorship_feedback',
+    'django_celery_beat',
 ]
 
 ASGI_APPLICATION = "tech_mentorship_platform.asgi.application"
@@ -159,3 +160,4 @@ CELERY_RESULT_EXTENDED = True
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

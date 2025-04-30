@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from mentorship.serializers import UserSerializer
+from mentorship.serializers import UserListSerializer
 from chat.models import Message, Chat
 from chat.pagination import ViewPagination
 from rest_framework.response import Response
@@ -10,7 +10,7 @@ from rest_framework import status
 
 
 class ConversationsListView(ListAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserListSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = ViewPagination
 
