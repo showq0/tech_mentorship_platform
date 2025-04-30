@@ -28,3 +28,6 @@ Thumbs.db
 
 user_chats_performance.log
 dump.rdb
+celerybeat-schedule
+celerybeat-schedule-shm
+celerybeat-schedule-wal

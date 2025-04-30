@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'mentorship',
     'user_auth',
     'chat',
-    'mentorship_feedback'
+    'mentorship_feedback',
+    'django_celery_beat',
 ]
 
 ASGI_APPLICATION = "tech_mentorship_platform.asgi.application"
@@ -149,3 +150,14 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'user_auth.User'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Celery configuration
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_TIMEZONE = 'UTC'
+CELERY_RESULT_EXTENDED = True
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

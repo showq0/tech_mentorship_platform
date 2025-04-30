@@ -1,9 +1,10 @@
 from rest_framework import serializers
-from mentorship.models import Session, Mentorship
+from mentorship.models import Session, Mentorship, BookingSlot
 from user_auth.models import User
+from user_auth.serializers import UserSerializer
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'profile_info']
@@ -43,3 +44,22 @@ class AssignMentorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mentorship
         fields = ['mentor']
+
+
+class BookingSlotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookingSlot
+        fields = ['start_time', 'duration_minutes']
+
+
+class SessionSerializer(serializers.ModelSerializer):
+    mentor = UserSerializer()
+    mentee = UserSerializer()
+    slot = BookingSlotSerializer()
+
+    class Meta:
+        model = Session
+        fields = ['mentor', 'mentee', 'slot']
+        depth = 1
+
+
