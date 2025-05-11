@@ -1,0 +1,11 @@
+docker build -t tech_mentorship .
+docker image list
+
+docker compose build
+docker compose  run --publish 8000:8000 tech_mentorship
+
+
+ #build the container for us
+ #rm to make another command with the same command before build
+docker-compose  run --rm app
+docker compose up
