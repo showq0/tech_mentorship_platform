@@ -1,0 +1,16 @@
+/.idea
+.idea
+
+.git
+.gitignore
+
+.env
+
+Dockerfile*
+.dockerignore
+
+*.log
+
+**/__pycache__
+
+db.sqlite3

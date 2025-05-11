@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+   app :
+      build: .
+      volumes:
+        - .:/app #direct link to the container
+      ports:
+          - 8000:8000
+      #name image
+      image: dev:app
+      container_name: dev-app
+      command: python3 manage.py runserver 0.0.0.0:8000
+
+      depends_on: # running order
+        - db
+      env_file:
+        - .env
+
+   db:
+     image: postgres
+     container_name: postgres
+     environment:
+       - POSTGRES_USER=postgres
+       - POSTGRES_DB=postgres
+       - POSTGRES_PASSWORD=root
+     volumes:
+       - ./data/db:/var/lib/postgresql/data
+     ports:
+       - "5432:5432"
+
+
+   celery:
+     build: .
+     container_name: dev-celery
+     command: celery -A tech_mentorship_platform worker --loglevel=info
+     depends_on:
+       - redis
+     volumes:
+       - .:/app
+
+   celery-beat:
+      build: .
+      container_name: dev-celery-beat
+      command: celery -A tech_mentorship_platform beat --loglevel=info
+      depends_on:
+        - redis
+      volumes:
+        - .:/app
+
+
+   redis:
+      image: redis:alpine
+      container_name: redis
+      ports:
+        - "6379:6379"  # Redis port
