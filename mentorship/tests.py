@@ -4,8 +4,8 @@ from django.utils import timezone
 from mentorship.utils import schedule_session_reminder
 from mentorship.models import Session, User, BookingSlot
 from mentorship.serializers import SessionSerializer
-
-
+import time
+from datetime import timedelta
 class ScheduleSessionReminderTest(TestCase):
     def setUp(self):
 
@@ -34,16 +34,10 @@ class ScheduleSessionReminderTest(TestCase):
 
     def test_schedule_session_reminder_creates_clocked_task(self):
         session = Session.objects.filter(mentor__username='user1', mentee__username='user2').first()
-        time = session.slot.start_time
-        session_serializer = SessionSerializer(instance=session)
-        schedule_session_reminder(session_serializer.data)
-
-        self.assertTrue(ClockedSchedule.objects.filter(clocked_time__minute=time.minute).exists())
-
-        iso_z_format = time.isoformat().replace("+00:00", "Z")
-
-        task_name = f'session_reminder-user1-user1-{iso_z_format}'
+        session_time = session.slot.start_time
+        reminder_time = session_time - timedelta(minutes=30)
+        self.assertTrue(ClockedSchedule.objects.filter(clocked_time=reminder_time).exists())
+        task_name = f'session_reminder-user1-user2-{session_time}'
         task = PeriodicTask.objects.get(name=task_name)
-
         self.assertEqual(task.task, 'mentorship.tasks.send_reminder_emails')
         self.assertTrue(task.one_off)

@@ -96,17 +96,26 @@ WSGI_APPLICATION = 'tech_mentorship_platform.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('DB_NAME'),
+#         'USER': os.getenv('DB_USER'),
+#         'PASSWORD': os.getenv('DB_PASSWORD'),
+#         'HOST': os.getenv('DB_HOST'),
+#         'PORT': os.getenv('DB_PORT'),
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+        'NAME': os.getenv('DB_NAME_RENDER'),
+        'USER': os.getenv('DB_USER_RENDER'),
+        'PASSWORD': os.getenv('DB_PASSWORD_RENDER'),
+        'HOST': os.getenv('DB_HOST_RENDER'),
+        'PORT': os.getenv('DB_PORT_RENDER'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -160,8 +169,12 @@ AUTH_USER_MODEL = 'user_auth.User'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Celery configuration
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_BROKER_URL =  os.getenv("Radis_URL")
+
+
+CELERY_RESULT_BACKEND = os.getenv("Radis_URL")
+
+
 CELERY_TIMEZONE = 'UTC'
 CELERY_RESULT_EXTENDED = True
 
