@@ -59,7 +59,7 @@ class SessionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Session
-        fields = ['mentor', 'mentee', 'slot']
+        fields = ['mentor', 'mentee', 'slot', 'id']
         depth = 1
 
 

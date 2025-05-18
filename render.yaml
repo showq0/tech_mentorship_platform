@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: django-web
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn tech_mentorship_platform.wsgi:application
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: DJANGO_SETTINGS_MODULE
+        value: tech_mentorship_platform.settings
+      - key: DATABASE_URL
+        value: postgres://tech_mentorship_user:JcOqzaCuxOKxkT5Coj3nePpYmT3P8d4Y@dpg-d0jrbrnfte5s7384cfp0-a.oregon-postgres.render.com:5432/tech_mentorship
+      - key: REDIS_URL
+        value: redis://default:SKsD2TdJGhS8q3a5Km@redis-18023.crce176.me-central-1-1.ec2.redns.redis-cloud.com:18023
+      - key: CELERY_BROKER_URL
+        value: redis://default:SKsD2TdJGhS8q3a5Km@redis-18023.crce176.me-central-1-1.ec2.redns.redis-cloud.com:18023
+      - key: CELERY_RESULT_BACKEND
+        value: redis://default:SKsD2TdJGhS8q3a5Km@redis-18023.crce176.me-central-1-1.ec2.redns.redis-cloud.com:18023
+
+  - type: worker
+    name: celery-worker
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A tech_mentorship_platform worker --loglevel=info
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: tech_mentorship_platform.settings
+      - key: DATABASE_URL
+        value: postgres://tech_mentorship_user:JcOqzaCuxOKxkT5Coj3nePpYmT3P8d4Y@dpg-d0jrbrnfte5s7384cfp0-a.oregon-postgres.render.com:5432/tech_mentorship
+      - key: CELERY_BROKER_URL
+        value: redis://default:SKsD2TdJGhS8q3a5Km@redis-18023.crce176.me-central-1-1.ec2.redns.redis-cloud.com:18023
+      - key: CELERY_RESULT_BACKEND
+        value: redis://default:SKsD2TdJGhS8q3a5Km@redis-18023.crce176.me-central-1-1.ec2.redns.redis-cloud.com:18023
+
+  - type: worker
+    name: celery-beat
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A tech_mentorship_platform beat --loglevel=info
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: tech_mentorship_platform.settings
+      - key: DATABASE_URL
+        value: postgres://tech_mentorship_user:JcOqzaCuxOKxkT5Coj3nePpYmT3P8d4Y@dpg-d0jrbrnfte5s7384cfp0-a.oregon-postgres.render.com:5432/tech_mentorship
+      - key: CELERY_BROKER_URL
+        value: redis://default:SKsD2TdJGhS8q3a5Km@redis-18023.crce176.me-central-1-1.ec2.redns.redis-cloud.com:18023
+      - key: CELERY_RESULT_BACKEND
+        value: redis://default:SKsD2TdJGhS8q3a5Km@redis-18023.crce176.me-central-1-1.ec2.redns.redis-cloud.com:18023
