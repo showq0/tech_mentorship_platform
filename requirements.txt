@@ -22,11 +22,15 @@ django-jsonform==2.23.2
 django-timezone-field==7.1
 djangorestframework==3.14.0
 djangorestframework_simplejwt==5.5.0
+gunicorn==23.0.0
 hyperlink==21.0.0
 idna==3.10
 incremental==24.7.2
+iniconfig==2.1.0
 kombu==5.5.3
 msgpack==1.1.0
+packaging==25.0
+pluggy==1.5.0
 prompt_toolkit==3.0.51
 psycopg2-binary==2.9.10
 pyasn1==0.6.1
@@ -34,6 +38,9 @@ pyasn1_modules==0.4.2
 pycparser==2.22
 PyJWT==2.9.0
 pyOpenSSL==25.0.0
+pytest==8.3.5
+pytest-django==4.11.1
+pytest-env==1.1.5
 python-crontab==3.2.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.0
