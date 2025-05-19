@@ -29,8 +29,9 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'tech_mentorship_platform.onrender.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'tech-mentorship-platform.onrender.com']
 # Application definition
+
 
 INSTALLED_APPS = [
     'daphne',
@@ -185,4 +186,4 @@ STORAGES = {
     },
 }
 
-CSRF_TRUSTED_ORIGINS = ['https://tech_mentorship_platform.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://tech-mentorship-platform.onrender.com']
