@@ -52,11 +52,12 @@ INSTALLED_APPS = [
 ]
 
 ASGI_APPLICATION = "tech_mentorship_platform.asgi.application"
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [os.getenv("Redis_URL")],
         },
     },
 }
@@ -166,9 +167,9 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'user_auth.User'
 
 # Celery configuration
-CELERY_BROKER_URL = os.getenv("Radis_URL")
+CELERY_BROKER_URL = os.getenv("Redis_URL")
 
-CELERY_RESULT_BACKEND = os.getenv("Radis_URL")
+CELERY_RESULT_BACKEND = os.getenv("Redis_URL")
 
 CELERY_TIMEZONE = 'UTC'
 CELERY_RESULT_EXTENDED = True
