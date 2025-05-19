@@ -20,7 +20,6 @@ load_dotenv(dotenv_path=env_path)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -30,7 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'tech_mentorship_platform.onrender.com']
 # Application definition
 
 INSTALLED_APPS = [
@@ -61,9 +60,9 @@ CHANNEL_LAYERS = {
     },
 }
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -91,7 +90,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tech_mentorship_platform.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -147,11 +145,10 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -166,18 +163,26 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'user_auth.User'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Celery configuration
-CELERY_BROKER_URL =  os.getenv("Radis_URL")
-
+CELERY_BROKER_URL = os.getenv("Radis_URL")
 
 CELERY_RESULT_BACKEND = os.getenv("Radis_URL")
-
 
 CELERY_TIMEZONE = 'UTC'
 CELERY_RESULT_EXTENDED = True
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+CSRF_TRUSTED_ORIGINS = ['https://tech_mentorship_platform.onrender.com']
