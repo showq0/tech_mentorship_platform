@@ -52,11 +52,12 @@ INSTALLED_APPS = [
 ]
 
 ASGI_APPLICATION = "tech_mentorship_platform.asgi.application"
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [os.getenv("Radis_URL")],
         },
     },
 }
