@@ -9,11 +9,9 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/asgi/
 
 import os
 import django
-from channels.routing import get_default_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tech_mentorship_platform.settings')
 django.setup()
-application = get_default_application()
 
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
