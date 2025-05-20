@@ -27,7 +27,7 @@
         const sender_name = "{{ request.user.username }}";
         const sender_id = "{{ request.user.id }}";
         const chat_id = {{ chat_id }};
-        const socket = new WebSocket(`ws://${window.location.host}/ws/messages/${chat_id}/`);
+        const socket = new WebSocket(`wss://${window.location.host}/ws/messages/${chat_id}/`);
 
 
         socket.onmessage = function(e) {
