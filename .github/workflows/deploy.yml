@@ -32,28 +32,28 @@ jobs:
       run: |
         pytest 
 
-#  docker-build-and-push:
-#    needs: build-and-test
-#    runs-on: ubuntu-latest
-#    env:
-#      docker_image: showq10/tech-mentorship-platform
-#      docker_pass: ${{ secrets.DOCKER_PASSWORD }}
-#      docker_username: ${{ secrets.DOCKER_USERNAME }}
-#
-#    steps:
-#    - name: Checkout code
-#      uses: actions/checkout@v3
-#
-#    - name: Log in to Docker Hub
-#      env:
-#      run: echo "$docker_pass" | docker login -u "$docker_username"  --password-stdin
-#
-#    - name: Build Docker image
-#      run: docker build -t "$docker_image" .
-#
-#    - name: Push Docker image
-#      run: docker push "$docker_image"
-#
+  docker-build-and-push:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    env:
+      docker_image: showq10/tech-mentorship-platform
+      docker_pass: ${{ secrets.DOCKER_PASSWORD }}
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Log in to Docker Hub
+      env:
+      run: echo "$docker_pass" | docker login -u "$docker_username"  --password-stdin
+
+    - name: Build Docker image
+      run: docker build -t "$docker_image" .
+
+    - name: Push Docker image
+      run: docker push "$docker_image"
+
 #  deploy-to-render:
 #    needs: docker-build-and-push
 #    runs-on: ubuntu-latest
