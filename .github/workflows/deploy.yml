@@ -24,7 +24,7 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest 
+        pytest --reuse-db
 
 #  docker-build-and-push:
 #    needs: build-and-test
