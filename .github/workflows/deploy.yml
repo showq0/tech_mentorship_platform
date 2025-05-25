@@ -8,7 +8,13 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DB_NAME_RENDER: ${{ secrets.DB_NAME_RENDER }}
+      DB_USER_RENDER: ${{ secrets.DB_USER_RENDER }}
+      DB_PASSWORD_RENDER: ${{ secrets.DB_PASSWORD_RENDER }}
+      DB_HOST_RENDER: ${{ secrets.DB_HOST_RENDER }}
+      DB_PORT_RENDER: ${{ secrets.DB_PORT_RENDER }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -23,8 +29,6 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run tests
-      env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: |
         pytest 
 
