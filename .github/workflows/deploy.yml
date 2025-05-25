@@ -53,12 +53,12 @@ jobs:
     - name: Push Docker image
       run: docker push "$docker_image"
 
-#  deploy-to-render:
-#    needs: docker-build-and-push
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Trigger Render Deploy Hook
-#        env:
-#          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-#        run: curl -X POST "$deploy_url"
+  deploy-to-render:
+      needs: docker-build-and-push
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Trigger Render Deploy Hook
+          env:
+            deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          run: curl -X POST "$deploy_url"
