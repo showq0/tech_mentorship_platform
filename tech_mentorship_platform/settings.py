@@ -115,8 +115,8 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST_RENDER'),
         'PORT': os.getenv('DB_PORT_RENDER'),
         'TEST': {
-            'NAME': 'test_db',
-        }
+             'MIRROR': 'default',
+        },
     }
 }
 
