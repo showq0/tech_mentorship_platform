@@ -6,6 +6,9 @@ from mentorship.models import Session, User, BookingSlot
 from mentorship.serializers import SessionSerializer
 import time
 from datetime import timedelta
+
+
+
 class ScheduleSessionReminderTest(TestCase):
     def setUp(self):
 
@@ -41,3 +44,39 @@ class ScheduleSessionReminderTest(TestCase):
         task = PeriodicTask.objects.get(name=task_name)
         self.assertEqual(task.task, 'mentorship.tasks.send_reminder_emails')
         self.assertTrue(task.one_off)
+
+
+class MatchMentorTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Create mentor users
+        cls.mentor1 = User.objects.create(
+            username="mentor1",
+            role="mentor",
+            profile_info={"bio": "Frontend expert but love backend topics.", "skills": ["JavaScript", "React", "CSS"], "mentorship_style": "Supportive and collaborative."}
+        )
+        cls.mentor2 = User.objects.create(
+            username="mentor2",
+            role="mentor",
+            profile_info={"bio": "Experienced backend developer and AI", "skills": ["Python", "Django", "REST APIs"], "mentorship_style": "Hands-on and project-based."}
+        )
+        cls.mentor2 = User.objects.create(
+            username="mentor3",
+            role="mentor",
+            profile_info={"bio": "Cloud and DevOps specialist.", "skills": ["AWS", "Kubernetes", "Terraform"],"contact_info": "rima@example.com", "mentorship_style": "Structured and goal-oriented"}
+        )
+
+        # Create mentee user
+        cls.mentee = User.objects.create(
+            username="mentee1",
+            role="mentee",
+            profile_info={"bio": "Passionate about AI.", "goals": ["Learn python", "AI"], "current_skills": ["Python"], "mentorship_needs": "Hands-on project"}
+        )
+
+    def test_match_the_right_mentor(self):
+        from mentorship.utils import match_the_right_mentor
+
+        best_mentor = match_the_right_mentor(self.mentee)
+        self.assertIsNotNone(best_mentor)
+        print(f"Best matched mentor: {best_mentor.username}")
+        self.assertEqual(best_mentor.username, "mentor2")

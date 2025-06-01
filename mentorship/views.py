@@ -1,4 +1,7 @@
+from rest_framework.decorators import permission_classes, api_view
+
 from mentorship.models import BookingSlot, Session, Mentorship
+from mentorship.utils import match_the_right_mentor
 from user_auth.models import User
 from mentorship.serializers import UserListSerializer
 from rest_framework.views import APIView
@@ -117,3 +120,17 @@ class RequestMentorshipView(APIView):
                 return Response({"message": e.messages}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({"message": "Mentorship request sent to mentor successfully "}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsMentee])
+def match_mentor(request):
+    mentee = request.user
+    best_mentor = match_the_right_mentor(mentee)
+    if not best_mentor:
+        return Response({'error': 'No mentors found'}, status=200)
+
+    return Response({
+        'mentor-username': best_mentor.username,
+        'mentor-profile-info': best_mentor.profile_info
+    })
