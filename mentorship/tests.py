@@ -1,12 +1,8 @@
 from django.test import TestCase
 from django_celery_beat.models import ClockedSchedule, PeriodicTask
 from django.utils import timezone
-from mentorship.utils import schedule_session_reminder
 from mentorship.models import Session, User, BookingSlot
-from mentorship.serializers import SessionSerializer
-import time
 from datetime import timedelta
-
 
 
 class ScheduleSessionReminderTest(TestCase):
