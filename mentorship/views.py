@@ -128,7 +128,7 @@ def match_mentor(request):
     mentee = request.user
     best_mentor = match_the_right_mentor(mentee)
     if not best_mentor:
-        return Response({'error': 'No mentors found'}, status=200)
+        return Response({'info': 'There is no result'})
 
     return Response({
         'mentor-username': best_mentor.username,
