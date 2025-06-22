@@ -72,7 +72,9 @@ class MatchMentorTest(TestCase):
     def test_match_the_right_mentor(self):
         from mentorship.utils import match_the_right_mentor
 
-        best_mentor = match_the_right_mentor(self.mentee)
+        result = match_the_right_mentor(self.mentee)
+        best_mentor = result.get('mentor')
         self.assertIsNotNone(best_mentor)
         print(f"Best matched mentor: {best_mentor.username}")
         self.assertEqual(best_mentor.username, "mentor2")
+
