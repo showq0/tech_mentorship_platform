@@ -1,12 +1,8 @@
 from django.test import TestCase
 from django_celery_beat.models import ClockedSchedule, PeriodicTask
 from django.utils import timezone
-from mentorship.utils import schedule_session_reminder
 from mentorship.models import Session, User, BookingSlot
-from mentorship.serializers import SessionSerializer
-import time
 from datetime import timedelta
-
 
 
 class ScheduleSessionReminderTest(TestCase):
@@ -76,7 +72,9 @@ class MatchMentorTest(TestCase):
     def test_match_the_right_mentor(self):
         from mentorship.utils import match_the_right_mentor
 
-        best_mentor = match_the_right_mentor(self.mentee)
+        result = match_the_right_mentor(self.mentee)
+        best_mentor = result.get('mentor')
         self.assertIsNotNone(best_mentor)
         print(f"Best matched mentor: {best_mentor.username}")
         self.assertEqual(best_mentor.username, "mentor2")
+
