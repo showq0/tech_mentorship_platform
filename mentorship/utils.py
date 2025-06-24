@@ -63,9 +63,9 @@ def match_the_right_mentor(mentee: User):
         current_skills_embeddings = model.encode(current_skills, convert_to_tensor=True)
         mentorship_needs_embeddings = model.encode(mentorship_needs, convert_to_tensor=True)
 
-        goals_scores = util.semantic_search(goals_embeddings, mentor_embeddings)
-        current_skills_score = util.semantic_search(current_skills_embeddings, mentor_embeddings)
-        mentorship_need_scores = util.semantic_search(mentorship_needs_embeddings, mentor_embeddings)
+        goals_scores = util.cos_sim(goals_embeddings, mentor_embeddings)
+        current_skills_score = util.cos_sim(current_skills_embeddings, mentor_embeddings)
+        mentorship_need_scores = util.cos_sim(mentorship_needs_embeddings, mentor_embeddings)
         threshold = torch.quantile(goals_scores, 0.75).item()
 
         filtered_goals_scores = goals_scores.where(goals_scores > threshold, 0)
