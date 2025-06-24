@@ -21,6 +21,7 @@ RUN pip3 install --upgrade pip
 COPY requirements.txt  .
 
 RUN pip3 install --no-cache-dir -r requirements.txt
+RUN python manage.py collectstatic --noinput
 
 COPY . .
 

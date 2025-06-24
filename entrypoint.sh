@@ -1,5 +1,4 @@
 #!/bin/sh
-python manage.py collectstatic --noinput
 
 # Start Celery in background
 celery -A tech_mentorship_platform worker --loglevel=info &
