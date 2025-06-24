@@ -49,7 +49,7 @@ class MatchMentorTest(TestCase):
         cls.mentor1 = User.objects.create(
             username="mentor1",
             role="mentor",
-            profile_info={"bio": "Frontend expert but love backend topics.", "skills": ["JavaScript", "React", "CSS"], "mentorship_style": "Supportive and collaborative."}
+            profile_info={"bio": "Frontend expert but love backend topics and AI.", "skills": ["JavaScript", "React", "CSS"], "mentorship_style": "Supportive and collaborative."}
         )
         cls.mentor2 = User.objects.create(
             username="mentor2",
