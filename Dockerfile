@@ -13,18 +13,19 @@ ENV PYTHONDONTWRITEBYTECODE=1
 #error go to the cmd
 ENV PYTHONUNBUFFERED=1
 
+ARG DJANGO_SECRET_KEY
+ENV SECRET_KEY=$DJANGO_SECRET_KEY
 # Upgrade pip
 RUN pip3 install --upgrade pip
 # copy dependencies from your local machine into the /app/ folder
  # Executes a shell command inside the Docker image during build.
 # --no-cache-dir to prevents pip from saving downloaded in a cache.
 COPY requirements.txt  .
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 RUN mkdir -p /app/staticfiles
 
-RUN pip3 install --no-cache-dir -r requirements.txt
-RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 COPY entrypoint.sh /entrypoint.sh
