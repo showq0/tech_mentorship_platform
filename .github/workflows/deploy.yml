@@ -36,7 +36,7 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     env:
-      docker_image: showq10/tech-mentorship-platform
+      docker_image: ${{ secrets.DOCKER_IMAGE }}
       docker_pass: ${{ secrets.DOCKER_PASSWORD }}
       docker_username: ${{ secrets.DOCKER_USERNAME }}
 
