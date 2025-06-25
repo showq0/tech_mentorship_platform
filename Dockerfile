@@ -20,10 +20,11 @@ RUN pip3 install --upgrade pip
 # --no-cache-dir to prevents pip from saving downloaded in a cache.
 COPY requirements.txt  .
 
+COPY . .
+RUN mkdir -p /app/staticfiles
+
 RUN pip3 install --no-cache-dir -r requirements.txt
 RUN python manage.py collectstatic --noinput
-
-COPY . .
 
 EXPOSE 8000
 COPY entrypoint.sh /entrypoint.sh
